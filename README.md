@@ -73,8 +73,7 @@ in `src` directory.
 1. For extensibility, a schema should be passed to the generators or
    the first line of the file could be used to derive name and number of fields,
    and a list of fields could be passed to the generator, so that only required
-   fields are returned.  For this coding exercise, the schema is hard coded on
-   the generator.
+   fields are returned.
    1. Code was refactored to allow for deriving the schema from the
       first line.  set `hard_code_line_parser = False` to derive
       schema from the first line.  This basically removes the
