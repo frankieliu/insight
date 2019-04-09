@@ -132,6 +132,20 @@ in `src` directory.
 
    <img src="pipeline.png" width="900">
 
+1. If the order table is very large, the above scheme is fairly
+   ammenable to having parallel pipelines running at the same time.
+   There are a couple of possibilities with respect to partitioning
+   the order data, one is to shard the order table by the department
+   using a scheme as presented in the pipeline above -- arguably if
+   you are using the pipeline for sharding, then you don't need a
+   separate step to count.  Another is to horizontally partition the
+   data set, and operate on each partition independently.  The merge
+   at the reduce step will take some coordination, but can be done
+   hierarchically.  If the data is already coming in as a stream, the
+   above mentioned pipeline can also handle taking data directly from
+   the stream.
+
+
 ## Test cases
 1. Added `test_2` to make sure that departments with zero order are not
    reported.
