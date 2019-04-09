@@ -82,13 +82,12 @@ are no other dependencies.  Main program is found in `src` directory.
 
 1. We can then pipe the order list line by line through this first
    hash map and aggregate on the products that have an entry on the
-   hash map.  If the product id is fonud in the hash map, then it need
+   hash map.  If the product id is found in the hash map, then it need
    not go to the next stage in the pipeline.  Only elements which are
-   not found in the hash map are passed on to another processing node.
+   not found in the hash map are passed on to next stage.
 
-1. For lines with products which are not found they are passed to another
-   processing block with contains another subset of the hash map, i.e.
-   another 10 million entries.
+1. Each stage contains another subset of the "larger" hash map, e.g.
+   another 10 million entries
 
 1. After all lines go through the system, the individual processing
    units forward their aggregates to a central processing unit to
@@ -96,19 +95,21 @@ are no other dependencies.  Main program is found in `src` directory.
 
 1. Each order line, may in the worst case, may pass through all the
    processing blocks.  The time complexity still has O(# of orders).
-   And it is not multiplied by O(# products), which is proportional to
-   the number of processing stages, because lines arrive in a pipeline
-   fashion, i.e. nothing is waiting for the next item to be processed.
-   However latency is increased, we can argue that for long enough
-   order lists, this latency is insignificant.
+   In particular, it is not multiplied by O(# products), which is
+   proportional to the number of processing stages, because lines
+   arrive in a pipeline fashion, i.e. nothing is waiting for the next
+   item to be processed.  However latency is increased, but we can
+   argue that for long enough order lists, this latency is
+   insignificant.
 
-1. At each interface, one can add a message queue, so as to allow for
-   asynchronous pipelining, similarly the reduce operation for the
-   partial aggregates can be added to a single processing queue, so
-   that the internal state in the reducer does not have to handle the
-   concurrent requests from the pipeline stages.  For this topology,
-   the individual pipeline stages can locally aggregate and when the
-   "EOF" signal goes through it, send its results to the reducer.
+1. At each stage interface, one can add a message queue, so as to
+   allow for asynchronous pipelining, similarly the reduce block can
+   communicate with the other HM blocks via a message queue, so that
+   the internal state in the reducer does not have to handle the
+   concurrent requests coming from the pipeline stages.  For this
+   topology, the individual pipeline stages can locally aggregate
+   until an "EOF" or "stop" signal goes through it, at which point it
+   sends its results to the reducer.
 
    <img src="pipeline.png" width="900">
 
