@@ -70,8 +70,25 @@ in `src` directory.
    `quotechar='"'` `quoting=csv.QUOTE_ALL`, and
    `skipinitialspace=True` option, these should take care of any
     commas within the quotes.
-1. Time complexity: O(# product ids + # orders), Space complexity: O(#
-   product ids + # departments) The time complexity is due to the hash
+1. For extensibility, a schema should be passed to the generators or
+   the first line of the file could be used to derive name and number of fields,
+   and a list of fields could be passed to the generator, so that only required
+   fields are returned.  For this coding exercise, the schema is hard coded on
+   the generator.
+   1. Code was refactored to allow for deriving the schema from the
+      first line.  set `hard_code_line_parser = False` to derive
+      schema from the first line.  This basically removes the
+      duplication of code in `read_prod_table` and `read_order_table`,
+      into a generic `read_table` which specifies which fiels to
+      return back.  Proper handling of quoted strings is also handled
+      by the generator, making use of `split_quoted_line`
+   1. I kept the old hard-wired code because of speed when doing it on a
+      large file.
+
+## Complexity
+1. Time complexity: O(# product ids + # orders)
+1. Space complexity: O(# product ids + # departments)
+1. The time complexity is due to the hash
    map creation plus the time to go through the orders.  The space
    complexity is for storing the hash map and the aggregate count for
    each department.
@@ -117,5 +134,14 @@ in `src` directory.
    <img src="pipeline.png" width="900">
 
 ## Test cases
+1. Added `test_2` to make sure that departments with zero order are not
+   reported.
+1. Added `test_2` # comment rows in orders, so as to exclude certain
+   order rows from the input.
+1. Added `test_3` to check functionality of orders which have no matching
+   department, they are dropped from the count.
+1. Added `test_3` # comment rows in products, so as to exclude prod-dept rows
+   from the input.
+1. Added `test_4` to check handling of commas within quoted string.
 
 ## Extensions
