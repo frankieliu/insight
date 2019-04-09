@@ -15,7 +15,7 @@ def read_prod_table(product_file):
     """
     first_line = True
     try:
-    with open(product_file, 'r') as f:
+        with open(product_file, 'r') as f:
             for line in f:
                 if first_line is True:
                     first_line = False
