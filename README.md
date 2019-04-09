@@ -110,7 +110,7 @@ are no other dependencies.  Main program is found in `src` directory.
    the individual pipeline stages can locally aggregate and when the
    "EOF" signal goes through it, send its results to the reducer.
 
-   ![](pipeline.png)
+   <img src="pipeline.png" width="300">
 
 ## Test cases
 
