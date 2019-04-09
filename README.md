@@ -41,12 +41,14 @@ the second decimal place (i.e. hundredths).
 
 ## Running instructions
 
-`run.sh` is bash script.  Requires executable `python3` to be in the path, there
-are no other dependencies.  Main program is found in `src` directory.
+`run.sh` is a bash script.  It requires an executable `python3` to be
+in the path, there are no other dependencies.  Main program is found
+in `src` directory.
 
 ## Approach
 
-1. There is a generic args() function for taking the input file name from the CLI.
+1. There is a generic args() function for taking the input file names
+   from the CLI.
 1. There are two generators for parsing through the input files.
 1. There is a main which does the following:
    1. Generate a hash map from `product_id` to `department_id`
@@ -61,10 +63,10 @@ are no other dependencies.  Main program is found in `src` directory.
       ratio of the first time orders to number of orders.
 
 ## General considerations
-1. In general, I tried not import any external modules, to lower the
-   dependencies for running this code.
-1. A more robust CLI parser `getopt` could be used.
-1. For parsing csv files one should just use `csv.reader`, with the
+1. In general, I tried not importing any external modules, to lower
+   the dependencies for running this code.
+1. For a more robust CLI parser, `getopt` could be used.
+1. For parsing the two csv files, one should just use `csv.reader`, with the
    `quotechar='"'` `quoting=csv.QUOTE_ALL`, and
    `skipinitialspace=True` option, these should take care of any
     commas within the quotes.
@@ -75,10 +77,11 @@ are no other dependencies.  Main program is found in `src` directory.
    each department.
 
 ## Scalability issues
-1. For much larger product to department table, say with 1 billion
-   elements would become prohibitively large to store in memory.  In
-   this case, we could create a smaller hash map with 10 million
-   elements, such that only a subset of the products are represented.
+1. For much a larger product to department relational table, say with
+   1 billion elements, it would become prohibitively large to store in
+   memory.  In this case, we could create a smaller hash map with 10
+   million elements, such that only a subset of the products are
+   represented.
 
 1. We can then pipe the order list line by line through this first
    hash map and aggregate on the products that have an entry on the
