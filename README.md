@@ -75,12 +75,12 @@ in `src` directory.
    and a list of fields could be passed to the generator, so that only required
    fields are returned.
    1. Code was refactored to allow for deriving the schema from the
-      first line.  set `hard_code_line_parser = False` to derive
+      first line.  Set `hard_code_line_parser = False` to derive
       schema from the first line.  This basically removes the
       duplication of code in `read_prod_table` and `read_order_table`,
       into a generic `read_table` which specifies which fiels to
       return back.  Proper handling of quoted strings is also handled
-      by the generator, making use of `split_quoted_line`
+      by the generator, making use of `split_quoted_line`.
    1. I kept the old hard-wired code because of speed when doing it on a
       large file.
 
